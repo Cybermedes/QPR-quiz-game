@@ -1,18 +1,18 @@
 import random
 import tomllib
 from pathlib import Path
+from typing import Any
 """Script para preparar as perguntas e respostas"""
 
 
-def preparar_questoes(path: Path, num_questoes: int = 5) -> list[str]:
-
-    # Le as questões do arquivo toml
+def preparar_questoes(path: Path, num_questoes: int) -> list[str]:
+    """Le as questoes arquivo toml e as retorna em uma lista"""
     with open(path, mode="rb") as toml_arquivo:
-        questoes = tomllib.load(toml_arquivo)
+        questoes: dict[str, Any] = tomllib.load(toml_arquivo)
     num_questions = min(num_questoes, len(questoes))
+    lista_questoes: list[str, Any] = questoes["questions"]
 
-    # Retorna as questões em uma lista aleatória
-    return random.sample(questoes, k=num_questions)
+    return random.sample(lista_questoes, k=num_questions)
 
 
 def fazer_pergunta(questao):
