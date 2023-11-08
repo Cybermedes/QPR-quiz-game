@@ -20,9 +20,10 @@ def fazer_pergunta(questao):
 
 
 def rodar_quiz() -> None:
+    questoes_path: Path = Path("questions.toml")
 
     # Ler e selecionar as perguntas do arquivo com o banco de questões
-    questoes = preparar_questoes()
+    questoes: list[str] = preparar_questoes(questoes_path)
 
     # pontuação
     num_corretas: int = 0
