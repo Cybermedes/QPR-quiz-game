@@ -7,11 +7,10 @@ from string import ascii_lowercase
 
 def preparar_questoes(path: Path, num_questoes: int) -> list[dict[str, Any]]:
     """Le as questoes arquivo toml e as retorna em uma lista"""
-    with open(path, mode="rb") as toml_arquivo:
-        questoes: dict[str, Any] = tomllib.load(toml_arquivo)
-    num_questions = min(num_questoes, len(questoes))
-    lista_questoes: list[dict[str, Any]] = questoes["questions"]
-
+    
+    lista_questoes: list[dict[str, Any]] = tomllib.loads(path.read_text())["questions"]
+    num_questions = min(num_questoes, len(lista_questoes))
+    
     return random.sample(lista_questoes, k=num_questions)
 
 
@@ -38,7 +37,7 @@ def pegar_resposta(pergunta, alternativas):
     for letra, alternativa in alternativas_letradas.items():
         print(f"{letra}) {alternativa}")
     
-    while (alternativa_escolhida := input("\nQual é a resposta?")) not in alternativas_letradas:
+    while (alternativa_escolhida := input("\nQual é a resposta? ")) not in alternativas_letradas:
         print(f"Por favor responda com {', '.join(alternativas_letradas)}")
     
     return alternativas_letradas[alternativa_escolhida]
@@ -61,6 +60,5 @@ def rodar_quiz() -> None:
 
         # Resultado final
         print(f"\nVocê acertou {num_corretas} perguntas de um total de {len(quiz)} perguntas.")
-        
     else:
         print(f"O arquivo \"questions.toml\" não foi encontrado")
