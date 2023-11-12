@@ -19,23 +19,29 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
     """Lança a pergunta no terminal e espera o input do jogador.
     Retorna 1 ponto se acertar e 0 se errar"""
 
-    questao_principal: str = questao["question"]
     resposta_correta: str = questao["answer"]
     alternativas: list = [[questao["answer"]]] + questao["alternatives"]
-    random.shuffle(alternativas)
-    alternativas_numeradas = dict(zip(ascii_lowercase, alternativas))
-    print(questao_principal)
-    for letra, alternativa in alternativas_numeradas.items():
-        print(f"{letra}) {alternativa}")
-
-    resposta = input("Digite a resposta da alternativa correta: ")
+    alternativas_ordenadas = random.sample(alternativas, k=len(alternativas))
+    
+    resposta = pegar_resposta(questao["question"], alternativas_ordenadas)
     if resposta == resposta_correta:
         print("⭐ Resposta Correta! ⭐")
         return 1
     else:
         print(f"A resposta é {resposta_correta!r}, não {resposta!r}")
         return 0
-
+    
+def pegar_resposta(pergunta, alternativas):
+    
+    print(f"{pergunta}")
+    alternativas_letradas = dict(zip(ascii_lowercase, alternativas))
+    for letra, alternativa in alternativas_letradas.items():
+        print(f"{letra}) {alternativa}")
+    
+    while (alternativa_escolhida := input("\nQual é a resposta?")) not in alternativas_letradas:
+        print(f"Por favor responda com {', '.join(alternativas_letradas)}")
+    
+    return alternativas_letradas[alternativa_escolhida]
 
 def rodar_quiz() -> None:
     questoes_path: Path = Path().cwd().parent.joinpath("quiz_database", "questions.toml")
