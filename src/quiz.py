@@ -38,18 +38,22 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
 
 
 def rodar_quiz() -> None:
-    questoes_path: Path = Path("questions.toml")
+    questoes_path: Path = Path().cwd().parent.joinpath("quiz_database", "questions.toml")
     numero_perguntas: int = 5
+    
+    if questoes_path.exists():
+        # Ler e selecionar as perguntas do arquivo com o banco de questões
+        questoes: list[dict[str, Any]] = preparar_questoes(questoes_path, numero_perguntas)
 
-    # Ler e selecionar as perguntas do arquivo com o banco de questões
-    questoes: list[dict[str, Any]] = preparar_questoes(questoes_path, numero_perguntas)
+        # pontuação
+        num_corretas: int = 0
 
-    # pontuação
-    num_corretas: int = 0
+        # Main loop do quiz para mostrar perguntas, uma por vez
+        for questao in questoes:
+            num_corretas += fazer_pergunta(questao)
 
-    # Main loop do quiz para mostrar perguntas, uma por vez
-    for questao in questoes:
-        num_corretas += fazer_pergunta(questao)
-
-    # Resultado final
-    print(f"\nVocê acertou {num_corretas} perguntas")
+        # Resultado final
+        print(f"\nVocê acertou {num_corretas} perguntas")
+        
+    else:
+        print(f"O arquivo \"questions.toml\" não foi encontrado")
