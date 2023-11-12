@@ -20,7 +20,7 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
     Retorna 1 ponto se acertar e 0 se errar"""
 
     resposta_correta: str = questao["answer"]
-    alternativas: list = [[questao["answer"]]] + questao["alternatives"]
+    alternativas: list = [questao["answer"]] + questao["alternatives"]
     alternativas_ordenadas = random.sample(alternativas, k=len(alternativas))
     
     resposta = pegar_resposta(questao["question"], alternativas_ordenadas)
@@ -49,17 +49,18 @@ def rodar_quiz() -> None:
     
     if questoes_path.exists():
         # Ler e selecionar as perguntas do arquivo com o banco de questões
-        questoes: list[dict[str, Any]] = preparar_questoes(questoes_path, numero_perguntas)
+        quiz: list[dict[str, Any]] = preparar_questoes(questoes_path, numero_perguntas)
 
         # pontuação
         num_corretas: int = 0
 
         # Main loop do quiz para mostrar perguntas, uma por vez
-        for questao in questoes:
+        for num, questao in enumerate(quiz, start=1):
+            print(f"\nQuestão {num}:")
             num_corretas += fazer_pergunta(questao)
 
         # Resultado final
-        print(f"\nVocê acertou {num_corretas} perguntas")
+        print(f"\nVocê acertou {num_corretas} perguntas de um total de {len(quiz)} perguntas.")
         
     else:
         print(f"O arquivo \"questions.toml\" não foi encontrado")
