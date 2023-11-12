@@ -1,5 +1,35 @@
 [[questions]]
+# question 1
+question = "O que significa JDK?"
+answer = "Java Development Kit"
+alternatives = ["Java Disk Kit", "Java Development Kernel", "Java Download Kit"]
 
-question = ""
-answer = ""
-alternatives = ["", "", ""]
+[[questions]]
+# question 2
+question = "Em Java, existem quantas variáveis do tipo primitivas?"
+answer = 8
+alternatives = [6, 7, 9]
+
+[[questions]]
+# question 3
+question = "Em Java, qual destas interfaces não implementa a interface collection?"
+answer = "Map"
+alternatives = ["List", "Set", "Queue"]
+
+[[questions]]
+# question 4
+question = "Em Java, quantas classes uma classe pode extender através da herança?"
+answer = 1
+alternatives = [2, "nenhuma", "várias"]
+
+[[questions]]
+# question 5
+question = "Em Java, qual o metódo para imprimir no terminal uma string customizada?"
+answer = "System.out.printf()"
+alternatives = ["System.out.print()", "System.out.println()", "System.out.printv()"]
+
+[[questions]]
+# question 6
+question = "Em sistemas Unix e derivados, qual destes terminais é o mais comum?"
+answer = "Bash"
+alternatives = ["Tash", "Tmux", "Zash"]
