@@ -1,2 +1,8 @@
+# rich: https://pypi.org/project/rich/
 rich
+# questionary: https://pypi.org/project/questionary/
 questionary
+# black: https://pypi.org/project/black/
+black
+# mypy: https://pypi.org/project/mypy/
+mypy
