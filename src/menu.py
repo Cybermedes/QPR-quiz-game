@@ -5,9 +5,11 @@ import questionary
 
 console = Console()
 
+
 def saber_mais() -> None:
     # TODO adicionar string contendo informações sobre a aplicação
     pass
+
 
 def mostrar_menu() -> None:
     titulo: str = """
@@ -30,20 +32,20 @@ def mostrar_menu() -> None:
 
     console.print(titulo.upper(), style="blue bold", justify="center")
 
-    questionario_estilo = Style([
-        ('qmark', 'fg:#673ab7 bold'),
-        ('highlighted', 'fg:#e1bb0c bold'),
-        ('pointer', 'fg:#e1bb0c bold'),
-    ])
+    questionario_estilo = Style(
+        [
+            ("qmark", "fg:#673ab7 bold"),
+            ("highlighted", "fg:#e1bb0c bold"),
+            ("pointer", "fg:#e1bb0c bold"),
+        ]
+    )
     opcao = questionary.select(
         message="Selecione uma das opções abaixo:",
-        choices=[
-            "Jogar", "Sobre", "Sair"
-        ],
+        choices=["Jogar", "Sobre", "Sair"],
         style=questionario_estilo,
-        instruction="(Use as setas e aperte ENTER)"
+        instruction="(Use as setas e aperte ENTER)",
     ).ask()
-    
+
     match opcao:
         case "Jogar":
             rodar_quiz()

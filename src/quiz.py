@@ -7,10 +7,10 @@ from string import ascii_lowercase
 
 def preparar_questoes(path: Path, num_questoes: int) -> list[dict[str, Any]]:
     """Le as questoes arquivo toml e as retorna em uma lista"""
-    
+
     lista_questoes: list[dict[str, Any]] = tomllib.loads(path.read_text())["questions"]
     num_questions = min(num_questoes, len(lista_questoes))
-    
+
     return random.sample(lista_questoes, k=num_questions)
 
 
@@ -21,7 +21,7 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
     resposta_correta: str = questao["answer"]
     alternativas: list = [questao["answer"]] + questao["alternatives"]
     alternativas_ordenadas = random.sample(alternativas, k=len(alternativas))
-    
+
     resposta = pegar_resposta(questao["question"], alternativas_ordenadas)
     if resposta == resposta_correta:
         print("⭐ Resposta Correta! ⭐")
@@ -29,23 +29,28 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
     else:
         print(f"A resposta é {resposta_correta!r}, não {resposta!r}")
         return 0
-    
+
+
 def pegar_resposta(pergunta, alternativas):
-    
     print(f"{pergunta}")
     alternativas_letradas = dict(zip(ascii_lowercase, alternativas))
     for letra, alternativa in alternativas_letradas.items():
         print(f"{letra}) {alternativa}")
-    
-    while (alternativa_escolhida := input("\nQual é a resposta? ")) not in alternativas_letradas:
+
+    while (
+        alternativa_escolhida := input("\nQual é a resposta? ")
+    ) not in alternativas_letradas:
         print(f"Por favor responda com {', '.join(alternativas_letradas)}")
-    
+
     return alternativas_letradas[alternativa_escolhida]
 
+
 def rodar_quiz() -> None:
-    questoes_path: Path = Path().cwd().parent.joinpath("quiz_database", "questions.toml")
+    questoes_path: Path = (
+        Path().cwd().parent.joinpath("quiz_database", "questions.toml")
+    )
     numero_perguntas: int = 5
-    
+
     if questoes_path.exists():
         # Ler e selecionar as perguntas do arquivo com o banco de questões
         quiz: list[dict[str, Any]] = preparar_questoes(questoes_path, numero_perguntas)
@@ -59,6 +64,8 @@ def rodar_quiz() -> None:
             num_corretas += fazer_pergunta(questao)
 
         # Resultado final
-        print(f"\nVocê acertou {num_corretas} perguntas de um total de {len(quiz)} perguntas.")
+        print(
+            f"\nVocê acertou {num_corretas} perguntas de um total de {len(quiz)} perguntas."
+        )
     else:
-        print(f"O arquivo \"questions.toml\" não foi encontrado")
+        print(f'O arquivo "questions.toml" não foi encontrado')
