@@ -1,7 +1,13 @@
 from rich.console import Console
 from questionary import Style
+from quiz import rodar_quiz
 import questionary
 
+console = Console()
+
+def saber_mais() -> None:
+    # TODO adicionar string contendo informações sobre a aplicação
+    pass
 
 def mostrar_menu() -> None:
     titulo: str = """
@@ -22,7 +28,6 @@ def mostrar_menu() -> None:
     🎮 Quiz de perguntas e respostas no Terminal sobre programação 🎮
     """
 
-    console = Console()
     console.print(titulo.upper(), style="blue bold", justify="center")
 
     questionario_estilo = Style([
@@ -30,7 +35,7 @@ def mostrar_menu() -> None:
         ('highlighted', 'fg:#e1bb0c bold'),
         ('pointer', 'fg:#e1bb0c bold'),
     ])
-    questionary.select(
+    opcao = questionary.select(
         message="Selecione uma das opções abaixo:",
         choices=[
             "Jogar", "Sobre", "Sair"
@@ -38,3 +43,14 @@ def mostrar_menu() -> None:
         style=questionario_estilo,
         instruction="(Use as setas e aperte ENTER)"
     ).ask()
+    
+    match opcao:
+        case "Jogar":
+            rodar_quiz()
+        case "Sobre":
+            saber_mais()
+        case "Sair":
+            # TODO adicionar mensagem ao sair da aplicação
+            pass
+        case _:
+            print(f"Por favor seleciona umas das opções")
