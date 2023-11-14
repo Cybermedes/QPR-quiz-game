@@ -1,3 +1,4 @@
 .idea/
 venv/
-src/__pycache__/
+qpr_quiz_game/__pycache__/
+qpr_quiz_game/.mypy_cache/
