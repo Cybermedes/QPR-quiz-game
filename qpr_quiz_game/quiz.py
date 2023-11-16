@@ -1,8 +1,14 @@
+import os
 import random
 import tomllib
 from pathlib import Path
 from typing import Any
 from string import ascii_lowercase
+
+
+def limpar_terminal() -> int:
+    """Limpar o terminal através de commando. cls para Windows ou clear para Unix"""
+    return os.system("cls" if os.name in ("nt", "dos") else "clear")
 
 
 def preparar_questoes(path: Path, num_questoes: int) -> list[dict[str, Any]]:
@@ -38,7 +44,7 @@ def pegar_resposta(pergunta, alternativas):
         print(f"{letra}) {alternativa}")
 
     while (
-        alternativa_escolhida := input("\nQual é a resposta? ")
+            alternativa_escolhida := input("\nQual é a resposta? ")
     ) not in alternativas_letradas:
         print(f"Por favor responda com {', '.join(alternativas_letradas)}")
 
@@ -47,7 +53,7 @@ def pegar_resposta(pergunta, alternativas):
 
 def rodar_quiz() -> None:
     questoes_path: Path = (
-        Path().cwd().parent.joinpath("quiz_database", "questions.toml")
+        Path("quiz_database", "questions.toml")
     )
     numero_perguntas: int = 5
 
