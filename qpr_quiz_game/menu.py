@@ -1,6 +1,6 @@
 from rich.console import Console
 from questionary import Style
-from quiz import rodar_quiz
+from quiz import rodar_quiz, limpar_terminal
 import questionary
 
 console = Console()

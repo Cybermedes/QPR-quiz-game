@@ -1,6 +1,7 @@
 import os
 import random
 import tomllib
+import questionary
 from pathlib import Path
 from typing import Any
 from string import ascii_lowercase
@@ -66,8 +67,12 @@ def rodar_quiz() -> None:
 
         # Main loop do quiz para mostrar perguntas, uma por vez
         for num, questao in enumerate(quiz, start=1):
+            limpar_terminal()
             print(f"\nQuestão {num}:")
             num_corretas += fazer_pergunta(questao)
+            questionary.press_any_key_to_continue(
+                "Pressione qualquer tecla para continuar..."
+            ).ask()
 
         # Resultado final
         print(
