@@ -2,9 +2,13 @@ import os
 import random
 import tomllib
 import questionary
+
 from pathlib import Path
 from typing import Any
 from string import ascii_lowercase
+from rich.console import Console
+
+console = Console()
 
 
 def limpar_terminal() -> int:
@@ -31,10 +35,11 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
 
     resposta = pegar_resposta(questao["question"], alternativas_ordenadas)
     if resposta == resposta_correta:
-        print("⭐ Resposta Correta! ⭐")
+        console.print("\n✅ ⭐ Resposta Correta! ⭐\n".upper(), style="green")
         return 1
     else:
-        print(f"A resposta é {resposta_correta!r}, não {resposta!r}")
+        console.print(f"\n❌ A resposta certa é [bold green]{resposta_correta!r}[/], "
+                      f"não [bold red]{resposta!r}[/].\n")
         return 0
 
 
@@ -47,7 +52,7 @@ def pegar_resposta(pergunta, alternativas):
     while (
             alternativa_escolhida := input("\nQual é a resposta? ")
     ) not in alternativas_letradas:
-        print(f"Por favor responda com {', '.join(alternativas_letradas)}")
+        console.print(f"🚫 Por favor responda com [cyan]{', '.join(alternativas_letradas)}[/]")
 
     return alternativas_letradas[alternativa_escolhida]
 
@@ -68,15 +73,19 @@ def rodar_quiz() -> None:
         # Main loop do quiz para mostrar perguntas, uma por vez
         for num, questao in enumerate(quiz, start=1):
             limpar_terminal()
-            print(f"\nQuestão {num}:")
+            console.print(f"\nQuestão {num}:".upper(), style="bold")
             num_corretas += fazer_pergunta(questao)
             questionary.press_any_key_to_continue(
                 "Pressione qualquer tecla para continuar..."
             ).ask()
 
         # Resultado final
-        print(
-            f"\nVocê acertou {num_corretas} perguntas de um total de {len(quiz)} perguntas."
+        limpar_terminal()
+        console.print(
+            f"\nVocê acertou [bold underline]{num_corretas}[/] perguntas "
+            f"de um total de [bold underline]{len(quiz)}[/] perguntas."
         )
+        # TODO customizar mais a mensagem de resultado final
+        # TODO adicionar opção de jogar novamente
     else:
-        print(f'O arquivo "questions.toml" não foi encontrado')
+        console.print(f'⚠️ O arquivo "questions.toml" não foi encontrado ⚠️', style="red underline")

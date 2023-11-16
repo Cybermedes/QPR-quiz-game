@@ -12,6 +12,7 @@ def saber_mais() -> None:
 
 
 def mostrar_menu() -> None:
+    limpar_terminal()
     titulo: str = """
     ##########################################################
     **********************************************************
@@ -30,7 +31,7 @@ def mostrar_menu() -> None:
     🎮 Quiz de perguntas e respostas no Terminal sobre programação 🎮
     """
 
-    console.print(titulo.upper(), style="blue bold", justify="center")
+    console.print(titulo.upper(), style="cyan bold", justify="center")
 
     questionario_estilo = Style(
         [
