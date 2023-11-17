@@ -1,14 +1,27 @@
 from rich.console import Console
 from questionary import Style
-from quiz import rodar_quiz, limpar_terminal
 import questionary
+from quiz import rodar_quiz, limpar_terminal    # type: ignore
 
 console = Console()
 
 
+def encerrar_programa() -> None:
+    limpar_terminal()
+    console.print("👋 Tchau e até a próxima!", style="green")
+
+
 def saber_mais() -> None:
-    # TODO adicionar string contendo informações sobre a aplicação
-    pass
+    limpar_terminal()
+
+    console.print("""\n\tO QPR é um quiz de perguntas e respostas sobre programação e TI, 
+foi feito em Python 3.12 para Terminais como Bash, Zash ou Powershell.
+Utilize as setas do teclado para navegar no menu principal e ENTER para confirmar. Para as
+perguntas, digite a alternativa escolhida e aperte ENTER.
+\tO código fonte é [italic]open source[/] e mais informações estão disponíveis no GitHub para acesso
+através do link https://github.com/Cybermedes/QPR-quiz-game.\n""")
+    questionary.press_any_key_to_continue("Pressione qualquer tecla para voltar ao menu principal...").ask()
+    mostrar_menu()
 
 
 def mostrar_menu() -> None:
@@ -32,6 +45,7 @@ def mostrar_menu() -> None:
     """
 
     console.print(titulo.upper(), style="cyan bold", justify="center")
+    console.print("Version: Alpha", style="italic", justify="left")
 
     questionario_estilo = Style(
         [
@@ -53,7 +67,6 @@ def mostrar_menu() -> None:
         case "Sobre":
             saber_mais()
         case "Sair":
-            # TODO adicionar mensagem ao sair da aplicação
-            pass
+            encerrar_programa()
         case _:
             print(f"Por favor seleciona umas das opções")
