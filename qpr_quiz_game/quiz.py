@@ -2,6 +2,7 @@ import os
 import random
 import tomllib
 import questionary
+import menu  # type: ignore
 
 from pathlib import Path
 from typing import Any
@@ -85,7 +86,18 @@ def rodar_quiz() -> None:
             f"\nVocê acertou [bold underline]{num_corretas}[/] perguntas "
             f"de um total de [bold underline]{len(quiz)}[/] perguntas."
         )
+        while True:
+            jogar_novamente: str = input("\nJogar novamente [s/n]? ")
+            if jogar_novamente.lower() == 's':
+                rodar_quiz()
+                break
+            elif jogar_novamente.lower() == 'n':
+                menu.mostrar_menu()
+                break
+            else:
+                console.print(f"🚫 Por favor responda com [green]'s'[/] para sim ou [red]'n'[/] para não")
+
         # TODO customizar mais a mensagem de resultado final
-        # TODO adicionar opção de jogar novamente
+
     else:
         console.print(f'⚠️ O arquivo "questions.toml" não foi encontrado ⚠️', style="red underline")
