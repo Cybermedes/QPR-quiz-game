@@ -1,10 +1,10 @@
 import questionary
-import labels
+import labels  # type: ignore
 
 from rich.console import Console
 from questionary import Style
-from quiz import rodar_quiz
-from quiz import limpar_terminal  # type: ignore
+from quiz import rodar_quiz  # type: ignore
+from terminal import limpar_terminal  # type: ignore
 
 console = Console()
 

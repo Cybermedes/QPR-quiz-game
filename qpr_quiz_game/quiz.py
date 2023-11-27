@@ -1,21 +1,16 @@
-import os
 import random
 import tomllib
 import questionary
 import menu  # type: ignore
-import labels
+import labels  # type: ignore
 
 from pathlib import Path
 from typing import Any
 from string import ascii_lowercase
 from rich.console import Console
+from terminal import limpar_terminal  # type: ignore
 
 console = Console()
-
-
-def limpar_terminal() -> int:
-    """Limpar o terminal através de commando. cls para Windows ou clear para Unix"""
-    return os.system("cls" if os.name in ("nt", "dos") else "clear")
 
 
 def preparar_questoes(path: Path, num_questoes: int) -> list[dict[str, Any]]:
