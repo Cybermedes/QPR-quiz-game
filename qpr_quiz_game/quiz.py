@@ -3,6 +3,7 @@ import random
 import tomllib
 import questionary
 import menu  # type: ignore
+import labels
 
 from pathlib import Path
 from typing import Any
@@ -36,11 +37,10 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
 
     resposta = pegar_resposta(questao["question"], alternativas_ordenadas)
     if resposta == resposta_correta:
-        console.print("\n✅ ⭐ Resposta Correta! ⭐\n".upper(), style="green")
+        console.print(labels.QUIZ_RESPOSTA_CERTA[0].upper(), style="green")
         return 1
     else:
-        console.print(f"\n❌ A resposta certa é [bold green]{resposta_correta!r}[/], "
-                      f"não [bold red]{resposta!r}[/].\n")
+        console.print(labels.QUIZ_RESPOSTA_ERRADA[0].format(resposta_correta, resposta))
         return 0
 
 
@@ -51,17 +51,17 @@ def pegar_resposta(pergunta, alternativas):
         print(f"{letra}) {alternativa}")
 
     while (
-            alternativa_escolhida := input("\nQual é a resposta? ")
+        alternativa_escolhida := input(labels.QUIZ_USER_INPUT[0])
     ) not in alternativas_letradas:
-        console.print(f"🚫 Por favor responda com [cyan]{', '.join(alternativas_letradas)}[/]")
+        console.print(
+            labels.QUIZ_MENSAGEM_ERRO[0].format(", ".join(alternativas_letradas))
+        )
 
     return alternativas_letradas[alternativa_escolhida]
 
 
 def rodar_quiz() -> None:
-    questoes_path: Path = (
-        Path("quiz_database", "questions.toml")
-    )
+    questoes_path: Path = Path("quiz_database", "questions.toml")
     numero_perguntas: int = 5
 
     if questoes_path.exists():
@@ -74,30 +74,28 @@ def rodar_quiz() -> None:
         # Main loop do quiz para mostrar perguntas, uma por vez
         for num, questao in enumerate(quiz, start=1):
             limpar_terminal()
-            console.print(f"\nQuestão {num}:".upper(), style="bold")
+            console.print(labels.QUIZ_QUESTAO[0].format(num).upper(), style="bold")
             num_corretas += fazer_pergunta(questao)
-            questionary.press_any_key_to_continue(
-                "Pressione qualquer tecla para continuar..."
-            ).ask()
+            questionary.press_any_key_to_continue(labels.QUIZ_INSTRUCAO[0]).ask()
 
         # Resultado final
         limpar_terminal()
-        console.print(
-            f"\nVocê acertou [bold underline]{num_corretas}[/] perguntas "
-            f"de um total de [bold underline]{len(quiz)}[/] perguntas."
-        )
+        console.print(labels.QUIZ_RESULTADO_FINAL[0].format(num_corretas, len(quiz)))
         while True:
-            jogar_novamente: str = input("\nJogar novamente [s/n]? ")
-            if jogar_novamente.lower() == 's':
+            jogar_novamente: str = input(labels.QUIZ_JOGAR_NOVAMENTE[0])
+            if jogar_novamente.lower() == "s" or jogar_novamente.lower() == "y":
                 rodar_quiz()
                 break
-            elif jogar_novamente.lower() == 'n':
+            elif jogar_novamente.lower() == "n":
                 menu.mostrar_menu()
                 break
             else:
-                console.print(f"🚫 Por favor responda com [green]'s'[/] para sim ou [red]'n'[/] para não")
+                console.print(labels.QUIZ_OPCAO_INVALIDA[0])
 
         # TODO customizar mais a mensagem de resultado final
 
     else:
-        console.print(f'⚠️ O arquivo "questions.toml" não foi encontrado ⚠️', style="red underline")
+        console.print(
+            labels.QUIZ_SEM_DATABASE[0],
+            style="red underline",
+        )
