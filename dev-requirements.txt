@@ -1,0 +1,6 @@
+# black: https://pypi.org/project/black/
+black
+# mypy: https://pypi.org/project/mypy/
+mypy
+# pytest: https://pypi.org/project/pytest/
+pytest
