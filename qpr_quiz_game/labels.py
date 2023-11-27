@@ -44,8 +44,12 @@ QUIZ_MENSAGEM_ERRO: tuple = ("🚫 Por favor responda com [cyan]{}[/]",)
 QUIZ_QUESTAO: tuple = ("\nQuestão {}:",)
 QUIZ_USER_INPUT: tuple = ("\nQual é a resposta? ",)
 QUIZ_INSTRUCAO: tuple = ("Pressione qualquer tecla para continuar...",)
-QUIZ_RESULTADO_FINAL: tuple = ("\nVocê acertou [bold underline]{}[/] perguntas "
-                               + "de um total de [bold underline]{}[/] perguntas.",)
+QUIZ_RESULTADO_FINAL: tuple = (
+    "\nVocê acertou [bold underline]{}[/] perguntas "
+    + "de um total de [bold underline]{}[/] perguntas.",
+)
 QUIZ_JOGAR_NOVAMENTE: tuple = ("\nJogar novamente [s/n]? ",)
-QUIZ_OPCAO_INVALIDA: tuple = ("🚫 Por favor responda com [green]'s'[/] para sim ou [red]'n'[/] para não",)
-QUIZ_SEM_DATABASE: tuple = ("⚠️ O arquivo \"questions.toml\" não foi encontrado ⚠️",)
+QUIZ_OPCAO_INVALIDA: tuple = (
+    "🚫 Por favor responda com [green]'s'[/] para sim ou [red]'n'[/] para não",
+)
+QUIZ_SEM_DATABASE: tuple = ('⚠️ O arquivo "questions.toml" não foi encontrado ⚠️',)
