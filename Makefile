@@ -1,12 +1,15 @@
 play:
 	python3 qpr_quiz_game/main.py
 clean:
-	rm -rf qpr_quiz_game/.mypy_cache/ qpr_quiz_game/__pycache__
+	rm -rf .mypy_cache/ .pytest.cache/
+	rm -rf qpr_quiz_game/.mypy_cache/ qpr_quiz_game/__pycache__ 
+	rm -rf tests/__pycache__/
 install:
 	pip3 install -r requirements.txt
 dev: install
 	pip3 install -r dev-requirements.txt
 test:
+	pytest tests/test_*
 
 help:
 	@echo "Comandos disponíveis:"
