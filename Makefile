@@ -1,5 +1,5 @@
 play:
-	python3 qpr_quiz_game/main.py
+	python3 main.py
 clean:
 	rm -rf .mypy_cache/ .pytest_cache/
 	rm -rf qpr_quiz_game/.mypy_cache/ qpr_quiz_game/__pycache__ 

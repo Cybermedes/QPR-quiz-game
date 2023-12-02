@@ -1,7 +1,7 @@
 import sys
 import subprocess
 from rich.console import Console
-import labels as ui_text  # type: ignore
+import qpr_quiz_game.labels as ui_text
 
 
 def limpar_terminal() -> None:

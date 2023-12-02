@@ -1,14 +1,14 @@
 import random
 import tomllib
 import questionary
-import menu  # type: ignore
-import labels as ui_text  # type: ignore
+import qpr_quiz_game.menu as menu
+import qpr_quiz_game.labels as ui_text
 
 from pathlib import Path
-from typing import Any, Self
+from typing import Any
 from string import ascii_lowercase
 from rich.console import Console
-from terminal import limpar_terminal, abortar_programa  # type: ignore
+from qpr_quiz_game.terminal import limpar_terminal, abortar_programa
 
 console = Console()
 
