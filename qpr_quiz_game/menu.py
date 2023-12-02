@@ -1,5 +1,5 @@
 import questionary
-import labels  # type: ignore
+import labels as ui_text  # type: ignore
 
 from rich.console import Console
 from questionary import Style
@@ -12,15 +12,15 @@ console = Console()
 def encerrar_programa() -> None:
     """Encerra programa e imprime mesagem de despedida"""
     limpar_terminal()
-    console.print(labels.MENU_GOODBYE[0], style="green")
+    console.print(ui_text.MENU_GOODBYE[0], style="green")
 
 
 def saber_mais() -> None:
     """Imprime mais informações sobre o programa e link para o código fonte"""
     limpar_terminal()
 
-    console.print(labels.MENU_MAIS[0])
-    questionary.press_any_key_to_continue(labels.MENU_INSTRUCAO_2[0]).ask()
+    console.print(ui_text.MENU_MAIS[0])
+    questionary.press_any_key_to_continue(ui_text.MENU_INSTRUCAO_2[0]).ask()
     mostrar_menu()
 
 
@@ -28,9 +28,9 @@ def mostrar_menu() -> None:
     """Imprime o menu principal no terminal"""
 
     limpar_terminal()
-    titulo: str = str(labels.MENU_TITULO[0])
+    titulo: str = str(ui_text.MENU_TITULO[0])
     console.print(titulo.upper(), style="cyan bold", justify="center")
-    console.print(labels.MENU_VERSAO[0], style="italic", justify="left")
+    console.print(ui_text.MENU_VERSAO[0], style="italic", justify="left")
 
     # Estilo gráfico para as opções do menu principal
     questionario_estilo = Style(
@@ -43,10 +43,10 @@ def mostrar_menu() -> None:
 
     # Opções para o usuário escolher
     opcao = questionary.select(
-        message=labels.MENU_MENSAGEM[0],
-        choices=labels.MENU_OPCOES[0],
+        message=ui_text.MENU_MENSAGEM[0],
+        choices=ui_text.MENU_OPCOES[0],
         style=questionario_estilo,
-        instruction=labels.MENU_INSTRUCAO_1[0],
+        instruction=ui_text.MENU_INSTRUCAO_1[0],
     ).ask()
 
     match opcao:
