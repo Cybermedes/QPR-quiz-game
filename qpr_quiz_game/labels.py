@@ -53,3 +53,4 @@ QUIZ_OPCAO_INVALIDA: tuple = (
     "🚫 Por favor responda com [green]'s'[/] para sim ou [red]'n'[/] para não",
 )
 QUIZ_SEM_DATABASE: tuple = ('⚠️ O arquivo "questions.toml" não foi encontrado ⚠️',)
+QUIZ_MENSAGEM_ABORTADA: tuple = ("\n\nVocê abandonou o jogo!!",)

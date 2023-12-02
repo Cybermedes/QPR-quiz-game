@@ -1,5 +1,7 @@
 import sys
 import subprocess
+from rich.console import Console
+import labels as ui_text  # type: ignore
 
 
 def limpar_terminal() -> None:
@@ -16,3 +18,17 @@ def limpar_terminal() -> None:
         or sistema_operacional == "cygwin"
     ):
         subprocess.run("clear", shell=True)
+
+
+def abortar_programa(func):
+    """Decorator para fazer tratamento de exceção quando forçar parada do programa"""
+
+    cons = Console(style="red bold")
+
+    def abortar():
+        try:
+            func()
+        except KeyboardInterrupt:
+            cons.print(ui_text.QUIZ_MENSAGEM_ABORTADA[0])
+
+    return abortar

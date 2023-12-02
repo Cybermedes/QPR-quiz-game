@@ -56,5 +56,3 @@ def mostrar_menu() -> None:
             saber_mais()
         case "Sair":
             encerrar_programa()
-        case _:
-            print(f"Por favor seleciona umas das opções")

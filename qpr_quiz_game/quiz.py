@@ -5,16 +5,16 @@ import menu  # type: ignore
 import labels as ui_text  # type: ignore
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Self
 from string import ascii_lowercase
 from rich.console import Console
-from terminal import limpar_terminal  # type: ignore
+from terminal import limpar_terminal, abortar_programa  # type: ignore
 
 console = Console()
 
 
 def preparar_questoes(path: Path, num_questoes: int) -> list[dict[str, Any]]:
-    """Le as questoes arquivo toml e as retorna em uma lista"""
+    """Lê um número fixo de questoes arquivo toml e as retorna de forma aleatória em uma lista"""
 
     lista_questoes: list[dict[str, Any]] = tomllib.loads(path.read_text())["questions"]
     num_questions = min(num_questoes, len(lista_questoes))
@@ -26,10 +26,12 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
     """Lança a pergunta no terminal e espera o input do jogador.
     Retorna 1 ponto se acertar e 0 se errar"""
 
+    # Lê as perguntas, alternativas e resposta do repositório
     resposta_correta: str = questao["answer"]
     alternativas: list = [questao["answer"]] + questao["alternatives"]
     alternativas_ordenadas = random.sample(alternativas, k=len(alternativas))
 
+    # Checa se a resposta é certa ou errada e dá pontuação
     resposta = pegar_resposta(questao["question"], alternativas_ordenadas)
     if resposta == resposta_correta:
         console.print(ui_text.QUIZ_RESPOSTA_CERTA[0].upper(), style="green")
@@ -42,11 +44,17 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
 
 
 def pegar_resposta(pergunta, alternativas):
+    """Imprime a pergunta e as alternativas e espera uma resposta do usuário. Caso
+    a resposta seja inválida, faça a pergunta novamente"""
+
     print(f"{pergunta}")
-    alternativas_letradas = dict(zip(ascii_lowercase, alternativas))
+
+    # Adiciona letras para cada alternativa e convert list para dict
+    alternativas_letradas: dict[str, Any] = dict(zip(ascii_lowercase, alternativas))
     for letra, alternativa in alternativas_letradas.items():
         print(f"{letra}) {alternativa}")
 
+    # Loop para validação da resposta do usuário
     while (
         alternativa_escolhida := input(ui_text.QUIZ_USER_INPUT[0])
     ) not in alternativas_letradas:
@@ -57,7 +65,11 @@ def pegar_resposta(pergunta, alternativas):
     return alternativas_letradas[alternativa_escolhida]
 
 
+@abortar_programa
 def rodar_quiz() -> None:
+    """Inicia o quiz após ler e preparar as perguntas"""
+
+    # Pasta e aqruivo contendo as perguntas, respostas e alternativas
     questoes_path: Path = Path("quiz_database", "questions.toml")
     numero_perguntas: int = 5
 
@@ -94,5 +106,5 @@ def rodar_quiz() -> None:
     else:
         console.print(
             ui_text.QUIZ_SEM_DATABASE[0],
-            style="red underline",
+            style="red bold",
         )
