@@ -1,20 +1,22 @@
 import random
+import sys
 import tomllib
 import questionary
 import qpr_quiz_game.menu as menu
-import qpr_quiz_game.labels as ui_text
 
 from pathlib import Path
 from typing import Any
 from string import ascii_lowercase
 from rich.console import Console
+from qpr_quiz_game.labels import TextLabel
 from qpr_quiz_game.terminal import limpar_terminal, abortar_programa
 
 console = Console()
 
 
+# noinspection SpellCheckingInspection
 def preparar_questoes(path: Path, num_questoes: int) -> list[dict[str, Any]]:
-    """Lê um número fixo de questoes arquivo toml e as retorna de forma aleatória em uma lista"""
+    """Lê um número fixo de questões arquivo toml e as retorna de forma aleatória em uma lista"""
 
     lista_questoes: list[dict[str, Any]] = tomllib.loads(path.read_text())["questions"]
     num_questions = min(num_questoes, len(lista_questoes))
@@ -22,6 +24,7 @@ def preparar_questoes(path: Path, num_questoes: int) -> list[dict[str, Any]]:
     return random.sample(lista_questoes, k=num_questions)
 
 
+# noinspection SpellCheckingInspection
 def fazer_pergunta(questao: dict[str, Any]) -> int:
     """Lança a pergunta no terminal e espera o input do jogador.
     Retorna 1 ponto se acertar e 0 se errar"""
@@ -34,11 +37,11 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
     # Checa se a resposta é certa ou errada e dá pontuação
     resposta = pegar_resposta(questao["question"], alternativas_ordenadas)
     if resposta == resposta_correta:
-        console.print(ui_text.QUIZ_RESPOSTA_CERTA[0].upper(), style="green")
+        console.print(TextLabel.labels["quiz_right_answer"].upper(), style="green")
         return 1
     else:
         console.print(
-            ui_text.QUIZ_RESPOSTA_ERRADA[0].format(resposta_correta, resposta)
+            TextLabel.labels["quiz_wrong_answer"].format(resposta_correta, resposta)
         )
         return 0
 
@@ -56,24 +59,25 @@ def pegar_resposta(pergunta, alternativas):
 
     # Loop para validação da resposta do usuário
     while (
-        alternativa_escolhida := input(ui_text.QUIZ_USER_INPUT[0])
+            alternativa_escolhida := input(TextLabel.labels["quiz_user_input"])
     ) not in alternativas_letradas:
         console.print(
-            ui_text.QUIZ_MENSAGEM_ERRO[0].format(", ".join(alternativas_letradas))
+            TextLabel.labels["quiz_error_message"].format(", ".join(alternativas_letradas))
         )
 
     return alternativas_letradas[alternativa_escolhida]
 
 
+# noinspection SpellCheckingInspection
 @abortar_programa
 def rodar_quiz() -> None:
     """Inicia o quiz após ler e preparar as perguntas"""
 
-    # Pasta e aqruivo contendo as perguntas, respostas e alternativas
+    # Pasta e arquivo contendo as perguntas, respostas e alternativas
     questoes_path: Path = Path("quiz_database", "questions.toml")
     numero_perguntas: int = 5
 
-    if questoes_path.exists():
+    try:
         # Ler e selecionar as perguntas do arquivo com o banco de questões
         quiz: list[dict[str, Any]] = preparar_questoes(questoes_path, numero_perguntas)
 
@@ -83,15 +87,15 @@ def rodar_quiz() -> None:
         # Main loop do quiz para mostrar perguntas, uma por vez
         for num, questao in enumerate(quiz, start=1):
             limpar_terminal()
-            console.print(ui_text.QUIZ_QUESTAO[0].format(num).upper(), style="bold")
+            console.print(TextLabel.labels["quiz_question"].format(num).upper(), style="bold")
             num_corretas += fazer_pergunta(questao)
-            questionary.press_any_key_to_continue(ui_text.QUIZ_INSTRUCAO[0]).ask()
+            questionary.press_any_key_to_continue(TextLabel.labels["quiz_instruction"]).ask()
 
         # Resultado final
         limpar_terminal()
-        console.print(ui_text.QUIZ_RESULTADO_FINAL[0].format(num_corretas, len(quiz)))
+        console.print(TextLabel.labels["quiz_final_score"].format(num_corretas, len(quiz)))
         while True:
-            jogar_novamente: str = input(ui_text.QUIZ_JOGAR_NOVAMENTE[0])
+            jogar_novamente: str = input(TextLabel.labels["quiz_play_again"])
             if jogar_novamente.lower() == "s" or jogar_novamente.lower() == "y":
                 rodar_quiz()
                 break
@@ -99,12 +103,10 @@ def rodar_quiz() -> None:
                 menu.mostrar_menu()
                 break
             else:
-                console.print(ui_text.QUIZ_OPCAO_INVALIDA[0])
+                console.print(TextLabel.labels["quiz_invalid_option"])
 
         # TODO customizar mais a mensagem de resultado final
 
-    else:
-        console.print(
-            ui_text.QUIZ_SEM_DATABASE[0],
-            style="red bold",
-        )
+    except FileNotFoundError:
+        console.print(TextLabel.labels["quiz_no_database"], style="red bold")
+        sys.exit(1)

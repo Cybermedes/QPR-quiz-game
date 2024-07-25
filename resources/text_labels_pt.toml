@@ -1,0 +1,48 @@
+# Portugês
+# Menu labels
+menu_title = """
+    ##########################################################
+    **********************************************************
+    ██████╗ ██╗   ██╗██╗███████╗     ██████╗ ██████╗ ██████╗
+    ██╔═══██╗██║   ██║██║╚══███╔╝    ██╔═══██╗██╔══██╗██╔══██╗
+    ██║   ██║██║   ██║██║  ███╔╝     ██║   ██║██████╔╝██████╔╝
+    ██║▄▄ ██║██║   ██║██║ ███╔╝      ██║▄▄ ██║██╔═══╝ ██╔══██╗
+    ╚██████╔╝╚██████╔╝██║███████╗    ╚██████╔╝██║     ██║  ██║
+    ╚══▀▀═╝  ╚═════╝ ╚═╝╚══════╝     ╚══▀▀═╝ ╚═╝     ╚═╝  ╚═╝
+
+    **********************************************************
+    ##########################################################
+    🎲🏆🤓⭐ QPR ⭐🎲🏆🤓
+    **********************************************************
+
+    🎮 Quiz de perguntas e respostas no Terminal sobre programação 🎮
+    """
+menu_info = """
+
+    O QPR é um quiz de perguntas e respostas sobre programação e TI,
+foi feito em Python 3.12 para Terminais como Bash, Zash ou Powershell.
+Utilize as setas do teclado para navegar no menu principal e ENTER para confirmar. Para as
+perguntas, digite a alternativa escolhida e aperte ENTER.
+    O código fonte é [italic]open source[/] e mais informações estão disponíveis no GitHub para acesso
+através do link https://github.com/Cybermedes/QPR-quiz-game.
+"""
+menu_goodbye = "👋 Tchau e até a próxima!"
+menu_instruction_one = "(Use as setas e aperte ENTER)"
+menu_instruction_two = "Pressione qualquer tecla para voltar ao menu principal..."
+menu_version = "Version: Beta"
+menu_options = ["Jogar", "Sobre", "Sair"]
+menu_message = "Selecione uma das opções abaixo:"
+
+# Quiz labels
+quiz_right_answer = "\n✅ ⭐ Resposta Correta! ⭐\n"
+quiz_wrong_answer = "\n❌ A resposta certa é [bold green]{}[/], não [bold red]{}[/].\n"
+quiz_error_message = "🚫 Por favor responda com [cyan]{}[/]"
+quiz_question = "\nQuestão {}:"
+quiz_user_input = "\nQual é a resposta? "
+quiz_instruction = "Pressione qualquer tecla para continuar..."
+quiz_final_score = """\nVocê acertou [bold underline]{}[/] perguntas
+de um total de [bold underline]{}[/] perguntas."""
+quiz_play_again = "\nJogar novamente [s/n]? "
+quiz_invalid_option = "🚫 Por favor responda com [green]'s'[/] para sim ou [red]'n'[/] para não"
+quiz_no_database = "⚠️ O arquivo 'questions.toml' não foi encontrado ⚠️"
+quiz_aborted_message = "\n\nVocê abandonou o jogo!!"

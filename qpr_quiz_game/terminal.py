@@ -1,7 +1,7 @@
 import sys
 import subprocess
 from rich.console import Console
-import qpr_quiz_game.labels as ui_text
+from qpr_quiz_game.labels import TextLabel
 
 
 def limpar_terminal() -> None:
@@ -29,6 +29,6 @@ def abortar_programa(func):
         try:
             func()
         except KeyboardInterrupt:
-            cons.print(ui_text.QUIZ_MENSAGEM_ABORTADA[0])
-
+            cons.print(TextLabel.labels["quiz_aborted_message"])
+            sys.exit(1)
     return abortar

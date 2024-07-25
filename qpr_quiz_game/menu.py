@@ -1,36 +1,40 @@
+import sys
+
 import questionary
-import qpr_quiz_game.labels as ui_text
 
 from rich.console import Console
 from questionary import Style
 from qpr_quiz_game.quiz import rodar_quiz
 from qpr_quiz_game.terminal import limpar_terminal
+from qpr_quiz_game.labels import TextLabel
 
 console = Console()
 
 
 def encerrar_programa() -> None:
-    """Encerra programa e imprime mesagem de despedida"""
+    """Encerra programa e imprime mensagem de despedida"""
     limpar_terminal()
-    console.print(ui_text.MENU_GOODBYE[0], style="green")
+    console.print(TextLabel.labels["menu_goodbye"], style="green")
+    sys.exit(0)
 
 
 def saber_mais() -> None:
-    """Imprime mais informações sobre o programa e link para o código fonte"""
+    """Imprime mais informações sobre o programa e link para o código-fonte"""
     limpar_terminal()
 
-    console.print(ui_text.MENU_MAIS[0])
-    questionary.press_any_key_to_continue(ui_text.MENU_INSTRUCAO_2[0]).ask()
+    console.print(TextLabel.labels["menu_info"])
+    questionary.press_any_key_to_continue(TextLabel.labels["menu_instruction_two"]).ask()
     mostrar_menu()
 
 
+# noinspection SpellCheckingInspection
 def mostrar_menu() -> None:
     """Imprime o menu principal no terminal"""
 
     limpar_terminal()
-    titulo: str = str(ui_text.MENU_TITULO[0])
+    titulo: str = str(TextLabel.labels["menu_title"])
     console.print(titulo.upper(), style="cyan bold", justify="center")
-    console.print(ui_text.MENU_VERSAO[0], style="italic", justify="left")
+    console.print(TextLabel.labels["menu_version"], style="italic", justify="left")
 
     # Estilo gráfico para as opções do menu principal
     questionario_estilo = Style(
@@ -43,10 +47,10 @@ def mostrar_menu() -> None:
 
     # Opções para o usuário escolher
     opcao = questionary.select(
-        message=ui_text.MENU_MENSAGEM[0],
-        choices=ui_text.MENU_OPCOES[0],
+        message=TextLabel.labels["menu_message"],
+        choices=TextLabel.labels["menu_options"],
         style=questionario_estilo,
-        instruction=ui_text.MENU_INSTRUCAO_1[0],
+        instruction=TextLabel.labels["menu_instruction_one"],
     ).ask()
 
     match opcao:
