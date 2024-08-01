@@ -4,37 +4,37 @@ import questionary
 
 from rich.console import Console
 from questionary import Style
-from qpr_quiz_game.quiz import rodar_quiz
+from qpr_quiz_game.run import rodar_quiz
 from qpr_quiz_game.terminal import limpar_terminal
 from qpr_quiz_game.labels import TextLabel
 
 console = Console()
 
 
-def encerrar_programa() -> None:
+def encerrar_programa(label: dict[str, str | list[str]]) -> None:
     """Encerra programa e imprime mensagem de despedida"""
     limpar_terminal()
-    console.print(TextLabel.labels["menu_goodbye"], style="green")
+    console.print(label["menu_goodbye"], style="green")
     sys.exit(0)
 
 
-def saber_mais() -> None:
+def saber_mais(label: dict[str, str | list[str]]) -> None:
     """Imprime mais informações sobre o programa e link para o código-fonte"""
     limpar_terminal()
 
-    console.print(TextLabel.labels["menu_info"])
-    questionary.press_any_key_to_continue(TextLabel.labels["menu_instruction_two"]).ask()
-    mostrar_menu()
+    console.print(label["menu_info"])
+    questionary.press_any_key_to_continue(label["menu_instruction_two"]).ask()
+    mostrar_menu(TextLabel.labels)
 
 
 # noinspection SpellCheckingInspection
-def mostrar_menu() -> None:
+def mostrar_menu(label: dict[str, str | list[str]]) -> None:
     """Imprime o menu principal no terminal"""
 
     limpar_terminal()
-    titulo: str = str(TextLabel.labels["menu_title"])
+    titulo: str = str(label["menu_title"])
     console.print(titulo.upper(), style="cyan bold", justify="center")
-    console.print(TextLabel.labels["menu_version"], style="italic", justify="left")
+    console.print(label["menu_version"], style="italic", justify="left")
 
     # Estilo gráfico para as opções do menu principal
     questionario_estilo = Style(
@@ -47,16 +47,16 @@ def mostrar_menu() -> None:
 
     # Opções para o usuário escolher
     opcao = questionary.select(
-        message=TextLabel.labels["menu_message"],
-        choices=TextLabel.labels["menu_options"],
+        message=label["menu_message"],
+        choices=label["menu_options"],
         style=questionario_estilo,
-        instruction=TextLabel.labels["menu_instruction_one"],
+        instruction=label["menu_instruction_one"],
     ).ask()
 
     match opcao:
         case "Jogar":
             rodar_quiz()
         case "Sobre":
-            saber_mais()
+            saber_mais(TextLabel.labels)
         case "Sair":
-            encerrar_programa()
+            encerrar_programa(TextLabel.labels)

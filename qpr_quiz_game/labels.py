@@ -7,14 +7,13 @@ class TextLabel:
     """Strings em português e inglês"""
 
     labels: dict[str, str] = dict()
+    _lang_file: Path = Path("resources", "text_labels_pt.toml")
 
     @classmethod
     def carregar_labels(cls) -> None:
-        lang_file: Path = Path("resources", "text_labels_pt.toml")
         try:
-            with open(lang_file, "r") as file:
+            with open(TextLabel._lang_file, "r") as file:
                 TextLabel.labels = tomllib.loads(file.read())
-        except FileNotFoundError:
-            print(f"Arquivo '{lang_file}' não encontrado, não foi possível iniciar o programa")
-            print(f"File '{lang_file}' not found, could not start the program")
+        except FileNotFoundError as err:
+            print(f"{type(err).__name__}: Arquivo 'resources/text_labels_pt.toml' não encontrado.")
             sys.exit(1)

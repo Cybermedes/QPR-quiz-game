@@ -1,15 +1,12 @@
 import random
-import sys
 import tomllib
-import questionary
-import qpr_quiz_game.menu as menu
-
 from pathlib import Path
-from typing import Any
 from string import ascii_lowercase
+from typing import Any
+
 from rich.console import Console
+
 from qpr_quiz_game.labels import TextLabel
-from qpr_quiz_game.terminal import limpar_terminal, abortar_programa
 
 console = Console()
 
@@ -31,11 +28,11 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
 
     # Lê as perguntas, alternativas e resposta do repositório
     resposta_correta: str = questao["answer"]
-    alternativas: list = [questao["answer"]] + questao["alternatives"]
-    alternativas_ordenadas = random.sample(alternativas, k=len(alternativas))
+    alternativas: list[Any] = [questao["answer"]] + questao["alternatives"]
+    alternativas_ordenadas: list[Any] = random.sample(alternativas, k=len(alternativas))
 
     # Checa se a resposta é certa ou errada e dá pontuação
-    resposta = pegar_resposta(questao["question"], alternativas_ordenadas)
+    resposta: Any = pegar_resposta_do_jogador(questao["question"], alternativas_ordenadas)
     if resposta == resposta_correta:
         console.print(TextLabel.labels["quiz_right_answer"].upper(), style="green")
         return 1
@@ -46,16 +43,13 @@ def fazer_pergunta(questao: dict[str, Any]) -> int:
         return 0
 
 
-def pegar_resposta(pergunta, alternativas):
+def pegar_resposta_do_jogador(pergunta: str, alternativas: list) -> Any:
     """Imprime a pergunta e as alternativas e espera uma resposta do usuário. Caso
     a resposta seja inválida, faça a pergunta novamente"""
 
     print(f"{pergunta}")
 
-    # Adiciona letras para cada alternativa e convert list para dict
-    alternativas_letradas: dict[str, Any] = dict(zip(ascii_lowercase, alternativas))
-    for letra, alternativa in alternativas_letradas.items():
-        print(f"{letra}) {alternativa}")
+    alternativas_letradas = ordenar_alternativas(alternativas)
 
     # Loop para validação da resposta do usuário
     while (
@@ -68,45 +62,10 @@ def pegar_resposta(pergunta, alternativas):
     return alternativas_letradas[alternativa_escolhida]
 
 
-# noinspection SpellCheckingInspection
-@abortar_programa
-def rodar_quiz() -> None:
-    """Inicia o quiz após ler e preparar as perguntas"""
+def ordenar_alternativas(alternativas: list) -> dict[str, Any]:
+    """Adiciona letras para cada alternativa e convert list para dict"""
 
-    # Pasta e arquivo contendo as perguntas, respostas e alternativas
-    questoes_path: Path = Path("quiz_database", "questions.toml")
-    numero_perguntas: int = 5
-
-    try:
-        # Ler e selecionar as perguntas do arquivo com o banco de questões
-        quiz: list[dict[str, Any]] = preparar_questoes(questoes_path, numero_perguntas)
-
-        # pontuação
-        num_corretas: int = 0
-
-        # Main loop do quiz para mostrar perguntas, uma por vez
-        for num, questao in enumerate(quiz, start=1):
-            limpar_terminal()
-            console.print(TextLabel.labels["quiz_question"].format(num).upper(), style="bold")
-            num_corretas += fazer_pergunta(questao)
-            questionary.press_any_key_to_continue(TextLabel.labels["quiz_instruction"]).ask()
-
-        # Resultado final
-        limpar_terminal()
-        console.print(TextLabel.labels["quiz_final_score"].format(num_corretas, len(quiz)))
-        while True:
-            jogar_novamente: str = input(TextLabel.labels["quiz_play_again"])
-            if jogar_novamente.lower() == "s" or jogar_novamente.lower() == "y":
-                rodar_quiz()
-                break
-            elif jogar_novamente.lower() == "n":
-                menu.mostrar_menu()
-                break
-            else:
-                console.print(TextLabel.labels["quiz_invalid_option"])
-
-        # TODO customizar mais a mensagem de resultado final
-
-    except FileNotFoundError:
-        console.print(TextLabel.labels["quiz_no_database"], style="red bold")
-        sys.exit(1)
+    alternativas_letradas: dict[str, Any] = dict(zip(ascii_lowercase, alternativas))
+    for letra, alternativa in alternativas_letradas.items():
+        print(f"{letra}) {alternativa}")
+    return alternativas_letradas
